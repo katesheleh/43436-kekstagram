@@ -2,17 +2,7 @@
 
 (function() {
 
-  // Прячем блок с фильтрами .filters, добавляя ему класс hidden и сохраняем фотографии в массив pictures
-
-  var filtersHidden = document.querySelector('.filters');
-
-  filtersHidden.classList.add('hidden');
-
-  var pictures = [];
-
-  //  Исходные данные bin/data/data.json
-
-  var dataLoad = [{
+  var pictures = [{
     "likes": 40,
     "comments": 12,
     "url": "photos/1.jpg"
@@ -122,47 +112,48 @@
   var template = document.querySelector('template');
   var templateContainer = 'content' in template ? template.content : template;
   var container = document.querySelector('.pictures');
-
-
-  function getValues(array, valueData) {
-    for (var i=0; i < array.length; i++) {
-      return array[i].valueData;
-    }
-  };
+  var IMAGE_LOAD_TIMEOUT = 10000;
 
   var getPictureElement = function(picture) {
     var fotoBlock = templateContainer.querySelector('.picture').cloneNode(true);
-    fotoBlock.querySelector('.picture-comments').textContent =  getValues(dataLoad, 'comments');
-    fotoBlock.querySelector('.picture-likes').textContent =  getValues(dataLoad, 'likes');
+    fotoBlock.querySelector('.picture-comments').textContent = picture.comments;
+    fotoBlock.querySelector('.picture-likes').textContent = picture.likes;
+
+    var pic = fotoBlock.querySelector('img');
 
     var contentImage = new Image();
+    var imageTimeout = null;
 
-    // Обработчик загрузки
-    contentImage.onload = function() {
-      contentImage.src = getValues(dataLoad, 'url');
-      contentImage.width = 182;
-      contentImage.height = 182;
+    contentImage.onload = function(evt) {
+      clearTimeout(imageTimeout);
+      pic.src = evt.target.url;
+      pic.width = 182;
+      pic.height = 182;
     }
 
-    // Обработчик ошибки
     contentImage.onerror = function() {
-      hotelElement.classList.add('picture-load-failure');
+      fotoBlock.classList.add('picture-load-failure');
     };
 
-    return getValues(dataLoad, 'comments'), getValues(dataLoad, 'likes');
+    pic.src = picture.url;
+
+    imageTimeout = setTimeout(function() {
+      fotoBlock.classList.add('picture-load-failure');
+    }, IMAGE_LOAD_TIMEOUT);
+
+    return fotoBlock;
   };
-
-  getPictureElement();
-
-  // Создание для каждой записи массива pictures блок фотографии на основе шаблона #picture-template.
 
   var renderPictures = function(pictures) {
+    var filters = document.querySelector('.filters');
+    filters.classList.add('hidden');
+
     pictures.forEach(function(picture) {
       container.appendChild(getPictureElement(picture));
-
-      // Отображает блок с фильтрами.
-      filtersHidden.classList.remove('hidden');
     })
+
+    filters.classList.remove('hidden');
   };
 
+  renderPictures(pictures);
 })();
