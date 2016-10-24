@@ -126,7 +126,7 @@
 
     contentImage.onload = function(evt) {
       clearTimeout(imageTimeout);
-      pic.src = evt.target.url;
+      pic.src = evt.target.src;
       pic.width = 182;
       pic.height = 182;
     }
@@ -136,7 +136,7 @@
       fotoBlock.classList.add('picture-load-failure');
     };
 
-    pic.src = picture.url;
+    contentImage.src = picture.url;
 
     imageTimeout = setTimeout(function() {
       contentImage.classList.add('picture-load-failure');
