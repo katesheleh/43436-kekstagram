@@ -132,13 +132,14 @@
     }
 
     contentImage.onerror = function() {
+      clearTimeout(imageTimeout);
       fotoBlock.classList.add('picture-load-failure');
     };
 
     pic.src = picture.url;
 
     imageTimeout = setTimeout(function() {
-      fotoBlock.classList.add('picture-load-failure');
+      contentImage.classList.add('picture-load-failure');
     }, IMAGE_LOAD_TIMEOUT);
 
     return fotoBlock;
