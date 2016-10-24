@@ -121,15 +121,13 @@
 
     var pic = fotoBlock.querySelector('img');
 
-    var contentImage = new Image();
+    var contentImage = new Image(182, 182);
     var imageTimeout = null;
 
     contentImage.onload = function(evt) {
       clearTimeout(imageTimeout);
       pic.src = evt.target.src;
-      pic.width = 182;
-      pic.height = 182;
-    }
+    };
 
     contentImage.onerror = function() {
       clearTimeout(imageTimeout);
