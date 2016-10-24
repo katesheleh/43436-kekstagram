@@ -124,9 +124,9 @@
     var contentImage = new Image(182, 182);
     var imageTimeout = null;
 
-    contentImage.onload = function(evt) {
+    contentImage.onload = function() {
       clearTimeout(imageTimeout);
-      pic.src = evt.target.src;
+      pic.src = picture.url;
     };
 
     contentImage.onerror = function() {
