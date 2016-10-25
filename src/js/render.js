@@ -8,7 +8,7 @@ var renderPictures = function(pictures) {
 
   pictures.forEach(function(picture) {
     container.appendChild(getPictureElement(picture));
-  })
+  });
 
   filters.classList.remove('hidden');
 };
