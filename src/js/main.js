@@ -1,9 +1,9 @@
 'use strict';
 
-var loadData = require('loadData');
-var picture = requiere('picture');
-var render = require('render');
+var loadData = require('./loadData.js');
+var render = require('./render.js');
+
 
 loadData('http://localhost:1507/api/pictures', function(picture) {
-  picture.forEach(getPictureElement);
+  render(picture);
 });

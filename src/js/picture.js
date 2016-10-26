@@ -32,3 +32,5 @@ var getPictureElement = function(picture) {
 
   return fotoBlock;
 };
+
+module.exports = getPictureElement;

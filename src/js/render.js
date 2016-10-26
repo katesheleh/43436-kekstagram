@@ -1,9 +1,11 @@
 'use strict';
 
+var getPictureElement = require('./picture.js');
 var container = document.querySelector('.pictures');
+var filters = document.querySelector('.filters');
 
 var renderPictures = function(pictures) {
-  var filters = document.querySelector('.filters');
+
   filters.classList.add('hidden');
 
   pictures.forEach(function(picture) {
@@ -12,3 +14,5 @@ var renderPictures = function(pictures) {
 
   filters.classList.remove('hidden');
 };
+
+module.exports = renderPictures;
