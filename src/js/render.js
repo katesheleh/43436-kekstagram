@@ -1,6 +1,7 @@
 'use strict';
 
 var getPictureElement = require('./picture.js');
+
 var container = document.querySelector('.pictures');
 var filters = document.querySelector('.filters');
 
