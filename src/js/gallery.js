@@ -27,8 +27,6 @@ function Gallery() {
 
     galleryContainer.classList.remove('invisible');
 
-    setActivePicture(num);
-
     setPictures.forEach(function() {
       self.setActivePictures(num++);
     });
@@ -36,16 +34,16 @@ function Gallery() {
 
   fotoBlock.addEventListener('click', show);
 
+  self.setPictures = function(pictures) {
+    self.pictures = pictures;
+  };
+
 
   var setActivePicture = function(num) {
     activePicture = num;
     imgElement.src = self.pictures[activePicture].url;
     likesCount.textContent = self.pictures[activePicture].likes;
     commentsCount.textContent = self.pictures[activePicture].comments;
-  };
-
-  var setPictures = function(pictures) {
-    this.pictures = pictures;
   };
 }
 
