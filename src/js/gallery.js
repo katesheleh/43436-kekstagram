@@ -1,53 +1,56 @@
 'use strict';
 
-var getPictureElement = require('./picture.js');
+var galleryContainer = document.querySelector('.gallery-overlay');
+var closeElement = galleryContainer.querySelector('.gallery-overlay-close');
+var imgElement = galleryContainer.querySelector('.gallery-overlay-image');
+var likesCount = galleryContainer.querySelector('.likes-count');
+var commentsCount = galleryContainer.querySelector('.comments-count');
+var template = document.querySelector('template');
+var templateContainer = 'content' in template ? template.content : template;
+var fotoBlock = templateContainer.querySelector('.picture').cloneNode(true);
+
+var pictures = [];
+var activePicture = 0;
 
 function Gallery() {
-  var galleryContainer = document.querySelector('.gallery-overlay');
-  var closeElement = galleryContainer.querySelector('.gallery-overlay-close');
-  var imgElement = galleryContainer.querySelector('.gallery-overlay-image');
-  var template = document.querySelector('template');
-  var templateContainer = 'content' in template ? template.content : template;
-  var fotoBlock = templateContainer.querySelector('.picture').cloneNode(true);
-  var pictures = [];
-  var activePicture = 0;
-
-  // this.data = data;
-  // this.element = getPictureElement(data);
 
   var self = this;
-
-  var setActivePicture = function(picture) {
-    var image = imgElement;
-  };
 
   var hide = function(event) {
     event.preventDefault();
     galleryContainer.classList.add('invisible');
-  }
+  };
 
   closeElement.addEventListener('click', hide);
 
-  var show = function(pics) {
-    event.preventDefault();
+  var show = function(num) {
+
     galleryContainer.classList.remove('invisible');
 
-    pictures.forEach(function(pic) {
-      // да, сюда нужно каким-то образом записать данные....
-      // загруженные демо, особенно "Фотогалерея Кексобукинга", ужасны. Без объяснения где и что берется и т.д.
-    });
+    setActivePicture(num);
 
-    activePicture = 0;
-    setActivePicture(activePicture);
+    setPictures.forEach(function() {
+      self.setActivePictures(num++);
+    });
   };
 
   fotoBlock.addEventListener('click', show);
+
+
+  var setActivePicture = function(num) {
+    activePicture = num;
+    imgElement.src = self.pictures[activePicture].url;
+    likesCount.textContent = self.pictures[activePicture].likes;
+    commentsCount.textContent = self.pictures[activePicture].comments;
+  };
+
+  var setPictures = function(pictures) {
+    this.pictures = pictures;
+  };
 }
 
-// проверку не проходит из-за ряда неиспользованных значений, которые еще будут доработаны, если будут конечно доработаны..
-var imgGallery = new Gallery();
-
-console.log(imgGallery);
 
 
-module.exports = Gallery;
+var myGallery = new Gallery();
+
+module.exports = myGallery;

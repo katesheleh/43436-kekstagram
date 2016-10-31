@@ -10,4 +10,7 @@ loadData('http://localhost:1507/api/pictures', function(picture) {
 });
 
 
-gallery();
+
+loadData('http://localhost:1507/api/pictures', function(pictures) {
+  gallery.setPictures(pictures);
+});
