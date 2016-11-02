@@ -10,7 +10,6 @@ var templateContainer = 'content' in template ? template.content : template;
 var fotoBlock = templateContainer.querySelector('.picture').cloneNode(true);
 
 
-
 function Gallery() {
   this.pictures = [];
   this.activePicture = 0;
@@ -25,19 +24,15 @@ function Gallery() {
   closeElement.addEventListener('click', this.hide);
 
   this.show = function(num) {
-
     galleryContainer.classList.remove('invisible');
     setActivePicture(num);
   };
 
-  fotoBlock.addEventListener('click', function(event) {
-    event.preventDefault();
-    this.show(self.activePicture);
-  });
 
+  // Этот блок работает отлично за исключением возвращения на setActivePicture(0). В чем у меня здесь ошибка?
   imgElement.addEventListener('click', function() {
-    var next = setActivePicture(self.activePicture) + 1;
-    if (next >= this.pictures.length) {
+    var next = setActivePicture(self.activePicture + 1);
+    if (next >= self.pictures.length) {
       return setActivePicture(0);
     } else {
       return next;
