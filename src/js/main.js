@@ -5,12 +5,8 @@ var render = require('./render.js');
 var gallery = require('./gallery.js');
 
 
-loadData('http://localhost:1507/api/pictures', function(picture) {
-  render(picture);
-});
-
-
-
 loadData('http://localhost:1507/api/pictures', function(pictures) {
+  render(pictures);
   gallery.setPictures(pictures);
 });
+
