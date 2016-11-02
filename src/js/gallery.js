@@ -32,7 +32,7 @@ function Gallery() {
 
   fotoBlock.addEventListener('click', function(event) {
     event.preventDefault();
-    this.show();
+    this.show(self.activePicture);
   });
 
   imgElement.addEventListener('click', function() {
