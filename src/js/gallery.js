@@ -9,41 +9,51 @@ var template = document.querySelector('template');
 var templateContainer = 'content' in template ? template.content : template;
 var fotoBlock = templateContainer.querySelector('.picture').cloneNode(true);
 
-var pictures = [];
-var activePicture = 0;
+
 
 function Gallery() {
+  this.pictures = [];
+  this.activePicture = 0;
 
   var self = this;
 
-  var hide = function(event) {
+  this.hide = function(event) {
     event.preventDefault();
     galleryContainer.classList.add('invisible');
   };
 
-  closeElement.addEventListener('click', hide);
+  closeElement.addEventListener('click', this.hide);
 
-  var show = function(num) {
+  this.show = function(num) {
 
     galleryContainer.classList.remove('invisible');
-
-    setPictures.forEach(function() {
-      self.setActivePictures(num++);
-    });
+    setActivePicture(num);
   };
 
-  fotoBlock.addEventListener('click', show);
+  fotoBlock.addEventListener('click', function(event) {
+    event.preventDefault();
+    this.show();
+  });
 
-  self.setPictures = function(pictures) {
+  imgElement.addEventListener('click', function() {
+    var next = setActivePicture(self.activePicture) + 1;
+    if (next >= this.pictures.length) {
+      return setActivePicture(0);
+    } else {
+      return next;
+    }
+  });
+
+  this.setPictures = function(pictures) {
     self.pictures = pictures;
   };
 
 
   var setActivePicture = function(num) {
-    activePicture = num;
-    imgElement.src = self.pictures[activePicture].url;
-    likesCount.textContent = self.pictures[activePicture].likes;
-    commentsCount.textContent = self.pictures[activePicture].comments;
+    self.activePicture = num;
+    imgElement.src = self.pictures[self.activePicture].url;
+    likesCount.textContent = self.pictures[self.activePicture].likes;
+    commentsCount.textContent = self.pictures[self.activePicture].comments;
   };
 }
 
