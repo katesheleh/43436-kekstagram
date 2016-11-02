@@ -1,5 +1,4 @@
 'use strict';
-var gallery = require('./gallery.js');
 
 var getPictureElement = require('./picture.js');
 var container = document.querySelector('.pictures');
@@ -9,7 +8,7 @@ var renderPictures = function(pictures) {
 
   filters.classList.add('hidden');
 
-  gallery.setPictures(pictures).forEach(function(picture, index) {
+  pictures.forEach(function(picture, index) {
     container.appendChild(getPictureElement(picture, index));
   });
 
