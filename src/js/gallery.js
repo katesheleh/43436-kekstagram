@@ -1,7 +1,5 @@
 'use strict';
 
-var Pic = require('./picture.js');
-
 var galleryContainer = document.querySelector('.gallery-overlay');
 var closeElement = galleryContainer.querySelector('.gallery-overlay-close');
 var imgElement = galleryContainer.querySelector('.gallery-overlay-image');
@@ -17,7 +15,6 @@ function Gallery() {
   this.hide = function(event) {
     event.preventDefault();
     galleryContainer.classList.add('invisible');
-    Pic.remove();
   };
 
   closeElement.addEventListener('click', this.hide);
@@ -48,7 +45,6 @@ function Gallery() {
     commentsCount.textContent = self.pictures[self.activePicture].comments;
   };
 }
-
 
 
 var myGallery = new Gallery();
