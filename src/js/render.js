@@ -8,8 +8,8 @@ var renderPictures = function(pictures) {
 
   filters.classList.add('hidden');
 
-  pictures.forEach(function(picture) {
-    container.appendChild(getPictureElement(picture));
+  pictures.forEach(function(picture, index) {
+    container.appendChild(getPictureElement(picture, index));
   });
 
   filters.classList.remove('hidden');
