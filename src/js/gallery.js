@@ -5,10 +5,6 @@ var closeElement = galleryContainer.querySelector('.gallery-overlay-close');
 var imgElement = galleryContainer.querySelector('.gallery-overlay-image');
 var likesCount = galleryContainer.querySelector('.likes-count');
 var commentsCount = galleryContainer.querySelector('.comments-count');
-var template = document.querySelector('template');
-var templateContainer = 'content' in template ? template.content : template;
-var fotoBlock = templateContainer.querySelector('.picture').cloneNode(true);
-
 
 function Gallery() {
   this.pictures = [];
@@ -28,14 +24,12 @@ function Gallery() {
     setActivePicture(num);
   };
 
-
-  // Этот блок работает отлично за исключением возвращения на setActivePicture(0). В чем у меня здесь ошибка?
   imgElement.addEventListener('click', function() {
-    var next = setActivePicture(self.activePicture + 1);
+    var next = self.activePicture + 1;
     if (next >= self.pictures.length) {
       return setActivePicture(0);
     } else {
-      return next;
+      return setActivePicture(next);
     }
   });
 
