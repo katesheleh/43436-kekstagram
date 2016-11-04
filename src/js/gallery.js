@@ -47,7 +47,6 @@ function Gallery() {
 }
 
 
-
 var myGallery = new Gallery();
 
 module.exports = myGallery;

@@ -1,6 +1,7 @@
 'use strict';
 
-var getPictureElement = require('./picture.js');
+var Pic = require('./picture.js');
+
 var container = document.querySelector('.pictures');
 var filters = document.querySelector('.filters');
 
@@ -9,7 +10,8 @@ var renderPictures = function(pictures) {
   filters.classList.add('hidden');
 
   pictures.forEach(function(picture, index) {
-    container.appendChild(getPictureElement(picture, index));
+    var myPic = new Pic(picture, index);
+    container.appendChild(myPic.element);
   });
 
   filters.classList.remove('hidden');

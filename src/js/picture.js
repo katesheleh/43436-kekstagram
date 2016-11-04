@@ -6,7 +6,7 @@ var template = document.querySelector('template');
 var templateContainer = 'content' in template ? template.content : template;
 var IMAGE_LOAD_TIMEOUT = 10000;
 
-var getPictureElement = function(picture, index) {
+var getPictureElement = function(picture) {
   var fotoBlock = templateContainer.querySelector('.picture').cloneNode(true);
   fotoBlock.querySelector('.picture-comments').textContent = picture.comments;
   fotoBlock.querySelector('.picture-likes').textContent = picture.likes;
@@ -26,11 +26,6 @@ var getPictureElement = function(picture, index) {
     fotoBlock.classList.add('picture-load-failure');
   };
 
-  fotoBlock.addEventListener('click', function(event) {
-    event.preventDefault();
-    gallery.show(index);
-  });
-
   contentImage.src = picture.url;
 
   imageTimeout = setTimeout(function() {
@@ -40,4 +35,22 @@ var getPictureElement = function(picture, index) {
   return fotoBlock;
 };
 
-module.exports = getPictureElement;
+
+var Picture = function(data, element) {
+  this.data = data;
+  this.element = getPictureElement(data, element);
+
+  var self = this;
+
+  this.element.addEventListener('click', function(event) {
+    event.preventDefault();
+    gallery.show(element);
+  });
+
+  this.remove = function() {
+    self.element.removeEventListener('click', this.hide);
+  };
+};
+
+
+module.exports = Picture;
