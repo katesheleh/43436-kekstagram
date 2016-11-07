@@ -2,12 +2,14 @@
 
 var Pic = require('./picture.js');
 var getPage = require('./get-page.js');
+var loadData = require('./loadData.js');
 
 var container = document.querySelector('.pictures');
 var filters = document.querySelector('.filters');
 var THROTTLE_DELAY = 100;
 var PAGE_SIZE = 12;
 var pageNumber = 0;
+var activeFilter = 'filter-popular';
 
 var renderPictures = function(pictures, page, replace) {
   if (replace) {
@@ -47,9 +49,9 @@ var setScrollEnabled = function() {
 
   window.addEventListener('scroll', function() {
     if (Date.now() - lastCall >= THROTTLE_DELAY) {
-      if (isBottomReached() && isNextPageAvailable(pictures, pageNumber, PAGE_SIZE)) {
+      if (isBottomReached()) {
         pageNumber++;
-        renderPictures(pictures, pageNumber);
+        loadPics(activeFilter, ++pageNumber);
       }
 
       lastCall = Date.now();
@@ -60,14 +62,24 @@ var setScrollEnabled = function() {
 setScrollEnabled();
 // filters
 
+var loadPics = function(filter, pageNumber) {
+  loadData('http://localhost:1507/api/pictures', {
+    from: pageNumber * PAGE_SIZE,
+    to: pageNumber * PAGE_SIZE + PAGE_SIZE,
+    filter: filter
+  }, renderPictures);
+};
+
 var changeFilter = function(filterID) {
   container.innerHTML = '';
   activeFilter = filterID;
   pageNumber = 0;
+  loadPics(filterID, pageNumber);
 };
 
+
 filters.addEventListener('click', function(event) {
-  if(event.target.classList.contains('filters-item')) {
+  if (event.target.classList.contains('filters-item')) {
     changeFilter(event.target.getAttribute('for'));
   }
 });

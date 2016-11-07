@@ -11,10 +11,6 @@ var loadData = function(url, callback) {
 
   xhr.open('GET', url);
   xhr.send();
-
-  var script = document.createElement('script');
-  script.src = url + '?callback=';
-  document.body.appendChild(script);
 };
 
 module.exports = loadData;
