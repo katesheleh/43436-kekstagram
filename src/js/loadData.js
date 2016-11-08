@@ -1,6 +1,6 @@
 'use strict';
 
-var loadData = function(url, callback) {
+var loadData = function(url, obj, callback) {
 
   var xhr = new XMLHttpRequest();
 
