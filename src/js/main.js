@@ -3,7 +3,6 @@
 var loadData = require('./loadData.js');
 var render = require('./render.js');
 var gallery = require('./gallery.js');
-// var Pic = require('./picture.js');
 
 var PAGE_SIZE = 12;
 var THROTTLE_TIMEOUT = 200;
@@ -17,14 +16,14 @@ var footer = document.querySelector('footer');
 
 
 var renderPictures = function(pictures) {
-  render(pictures, pageNumber, true);
+  render(pictures);
   gallery.setPictures(pictures);
 };
 
-var loadPics = function(filter, pageNumber) {
+var loadPics = function(filter, pageNum) {
   loadData('http://localhost:1507/api/pictures', {
-    from: pageNumber * PAGE_SIZE,
-    to: pageNumber * PAGE_SIZE + PAGE_SIZE,
+    from: pageNum * PAGE_SIZE,
+    to: pageNum * PAGE_SIZE + PAGE_SIZE,
     filter: filter
   }, renderPictures);
 };

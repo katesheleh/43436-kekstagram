@@ -5,10 +5,10 @@ var Pic = require('./picture.js');
 var container = document.querySelector('.pictures');
 var filters = document.querySelector('.filters');
 
-var renderPictures = function(pictures, page, replace) {
-  if (replace) {
-    container.innerHTML = '';
-  }
+var renderPictures = function(pictures) {
+  // if (replace) {
+  //   container.innerHTML = '';
+  // }
 
   filters.classList.add('hidden');
 
