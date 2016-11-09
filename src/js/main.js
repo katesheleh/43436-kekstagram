@@ -4,6 +4,7 @@ var loadData = require('./loadData.js');
 var render = require('./render.js');
 var gallery = require('./gallery.js');
 
+var LARGE_SCREEN = 1024;
 var PAGE_SIZE = 12;
 var THROTTLE_TIMEOUT = 200;
 var GAP = 120;
@@ -43,6 +44,12 @@ filters.addEventListener('click', function(event) {
 });
 
 var lastCall = Date.now();
+
+window.addEventListener('load', function() {
+  if(window.innerHeight >= LARGE_SCREEN) {
+    loadPics(activeFilter, ++pageNumber);
+  }
+});
 
 window.addEventListener('scroll', function() {
   console.log('scroll');
