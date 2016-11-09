@@ -1,6 +1,12 @@
 'use strict';
 
-var loadData = function(url, obj, callback) {
+var getSearchString = function(params) {
+  return Object.keys(params).map(function(param) {
+    return [param, params[param]].join('=');
+  }).join('&');
+};
+
+var loadData = function(url, params, callback) {
 
   var xhr = new XMLHttpRequest();
 
@@ -9,7 +15,7 @@ var loadData = function(url, obj, callback) {
     callback(loadedData);
   });
 
-  xhr.open('GET', url);
+  xhr.open('GET', url + '?' + getSearchString(params));
   xhr.send();
 };
 
