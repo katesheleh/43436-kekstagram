@@ -1,16 +1,22 @@
 'use strict';
 
-var callbackName = 'jsonpRequest';
+var getSearchString = function(params) {
+  return Object.keys(params).map(function(param) {
+    return [param, params[param]].join('=');
+  }).join('&');
+};
 
-var loadData = function(url, callback) {
+var loadData = function(url, params, callback) {
 
-  window[callbackName] = function(data) {
-    callback(data);
-  };
+  var xhr = new XMLHttpRequest();
 
-  var script = document.createElement('script');
-  script.src = url + '?callback=' + callbackName;
-  document.body.appendChild(script);
+  xhr.addEventListener('load', function(evt) {
+    var loadedData = JSON.parse(evt.target.response);
+    callback(loadedData);
+  });
+
+  xhr.open('GET', url + '?' + getSearchString(params));
+  xhr.send();
 };
 
 module.exports = loadData;

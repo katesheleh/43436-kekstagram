@@ -17,4 +17,5 @@ var renderPictures = function(pictures) {
   filters.classList.remove('hidden');
 };
 
+
 module.exports = renderPictures;
