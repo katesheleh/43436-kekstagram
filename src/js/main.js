@@ -11,6 +11,11 @@ var GAP = 120;
 var pageNumber = 0;
 var activeFilter = 'filter-popular';
 
+
+if(window.innerHeight >= LARGE_SCREEN) {
+  PAGE_SIZE = 26;
+}
+
 var container = document.querySelector('.pictures');
 var filters = document.querySelector('.filters');
 var footer = document.querySelector('footer');
@@ -43,13 +48,13 @@ filters.addEventListener('click', function(event) {
   }
 });
 
-var lastCall = Date.now();
-
 window.addEventListener('load', function() {
   if(window.innerHeight >= LARGE_SCREEN) {
     loadPics(activeFilter, ++pageNumber);
   }
 });
+
+var lastCall = Date.now();
 
 window.addEventListener('scroll', function() {
   console.log('scroll');
