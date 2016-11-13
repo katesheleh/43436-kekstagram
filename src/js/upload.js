@@ -52,17 +52,24 @@ upSide.min = 0;
 
 var validateForm = function() {
 
-  var currentX = currentResizer.getConstraint().x - +leftSide.value;
-  var currentY = currentResizer.getConstraint().y - +upSide.value;
-  var currentWidth = currentResizer.getConstraint().side - +sizeSide.value;
+  var currentX = +leftSide.value;
+  var currentY = +upSide.value;
+  var currentWidth = +sizeSide.value;
+
+  // пробовала через данные переменные, но постоянно undefined
+  // var constr = currentResizer.getConstraint();
+  // var counterX = constr.currentX;
+  // var counterY = constr.currentY;
+  // var counterWidth = constr.currentWidth;
 
   var positive = currentX >= 0 && currentY >= 0;
   var fitWidth = currentX + currentWidth <= currentResizer._image.naturalWidth;
   var fitHeight = currentY + currentWidth <= currentResizer._image.naturalHeight;
 
-  currentResizer.moveConstraint(currentX, currentY, currentWidth);
-
   btnSubmit.disabled = !(positive && fitWidth && fitHeight);
+
+  currentResizer.setConstraint(currentX, currentY, currentWidth);
+  currentResizer.moveConstraint(currentX, currentY, currentWidth);
 };
 
 leftSide.addEventListener('input', validateForm);
