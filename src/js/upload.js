@@ -52,9 +52,9 @@ upSide.min = 0;
 
 var validateForm = function() {
 
-  var currentX = +leftSide.value - currentResizer.getConstraint().x;
-  var currentY = +upSide.value - currentResizer.getConstraint().y;
-  var currentWidth = +sizeSide.value - currentResizer.getConstraint().side;
+  var currentX = currentResizer.getConstraint().x - +leftSide.value;
+  var currentY = currentResizer.getConstraint().y - +upSide.value;
+  var currentWidth = currentResizer.getConstraint().side - +sizeSide.value;
 
   var positive = currentX >= 0 && currentY >= 0;
   var fitWidth = currentX + currentWidth <= currentResizer._image.naturalWidth;
