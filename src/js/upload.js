@@ -60,9 +60,7 @@ var validateForm = function() {
   var fitWidth = currentX + currentWidth <= currentResizer._image.naturalWidth;
   var fitHeight = currentY + currentWidth <= currentResizer._image.naturalHeight;
 
-  currentResizer.moveConstraint(currentX, 0, 0);
-  currentResizer.moveConstraint(0, currentY, 0);
-  currentResizer.moveConstraint(0, 0, currentWidth);
+  currentResizer.moveConstraint(currentX, currentY, currentWidth);
 
   btnSubmit.disabled = !(positive && fitWidth && fitHeight);
 };
