@@ -52,15 +52,19 @@ upSide.min = 0;
 
 var validateForm = function() {
 
-  var currentX = +leftSide.value;
-  var currentY = +upSide.value;
-  var currentWidth = +sizeSide.value;
+  var currentX = +leftSide.value - currentResizer.getConstraint().x;
+  var currentY = +upSide.value - currentResizer.getConstraint().y;
+  var currentWidth = +sizeSide.value - currentResizer.getConstraint().side;
+
   var positive = currentX >= 0 && currentY >= 0;
   var fitWidth = currentX + currentWidth <= currentResizer._image.naturalWidth;
   var fitHeight = currentY + currentWidth <= currentResizer._image.naturalHeight;
 
-  btnSubmit.disabled = !(positive && fitWidth && fitHeight);
+  currentResizer.moveConstraint(currentX, 0, 0);
+  currentResizer.moveConstraint(0, currentY, 0);
+  currentResizer.moveConstraint(0, 0, currentWidth);
 
+  btnSubmit.disabled = !(positive && fitWidth && fitHeight);
 };
 
 leftSide.addEventListener('input', validateForm);
@@ -68,6 +72,12 @@ leftSide.addEventListener('input', validateForm);
 upSide.addEventListener('input', validateForm);
 
 sizeSide.addEventListener('input', validateForm);
+
+window.addEventListener('resizerchange', function() {
+  leftSide.value = currentResizer.getConstraint().x;
+  upSide.value = currentResizer.getConstraint().y;
+  sizeSide.value = currentResizer.getConstraint().side;
+});
 
 // Сценарий для cookie
 var cookieItems = document.querySelectorAll('.upload-filter-controls > input');
@@ -316,44 +326,3 @@ if (savedCookie) {
   var actualCookie = document.querySelector('#upload-filter-' + savedCookie);
   actualCookie.click();
 }
-
-// где взять максимальное и минимальное значение загруженного фото?
-
-var imgWidth; // переменная для фактической ширины загруженого изображения
-var imgHeight; // переменная для фактической высоты загруженого изображения
-
-sizeSide.max = Math.min(imgWidth, imgHeight);
-
-leftSide.addEventListener('change', function() {
-  if (!sizeSide.value) {
-    this.max = sizeSide.max;
-  } else {
-    this.max = imgWidth - sizeSide.value;
-  }
-});
-
-upSide.addEventListener('change', function() {
-  if (!sizeSide.value) {
-    this.max = sizeSide.max;
-  } else {
-    this.max = imgHeight - sizeSide.value;
-  }
-});
-
-sizeSide.addEventListener('change', function() {
-  if (sizeSide.value) {
-    currentResizer.setConstraint(
-      currentResizer.getConstraint().x,
-      currentResizer.getConstraint().y,
-      sizeSide.value);
-  } else {
-    sizeSide.value = 0;
-  }
-});
-
-window.addEventListener('resizerchange', function() {
-  currentResizer.moveConstraint(
-    leftSide.value + currentResizer.getConstraint().x,
-    upSide.value + currentResizer.getConstraint().y,
-    sizeSide.value + sizeSide.value);
-});
