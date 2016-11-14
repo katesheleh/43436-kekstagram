@@ -6,10 +6,14 @@ var gallery = require('./gallery.js');
 
 var LARGE_SCREEN = 1024;
 var PAGE_SIZE = 12;
-var THROTTLE_TIMEOUT = 200;
 var GAP = 120;
 var pageNumber = 0;
 var activeFilter = 'filter-popular';
+
+
+if (window.innerHeight >= LARGE_SCREEN) {
+  PAGE_SIZE = 26;
+}
 
 var container = document.querySelector('.pictures');
 var filters = document.querySelector('.filters');
@@ -43,24 +47,29 @@ filters.addEventListener('click', function(event) {
   }
 });
 
-var lastCall = Date.now();
-
 window.addEventListener('load', function() {
-  if(window.innerHeight >= LARGE_SCREEN) {
+  if (window.innerHeight >= LARGE_SCREEN) {
     loadPics(activeFilter, ++pageNumber);
   }
 });
 
-window.addEventListener('scroll', function() {
-  console.log('scroll');
-  if (Date.now() - lastCall >= THROTTLE_TIMEOUT) {
-    console.log('complex scroll');
-    if (footer.getBoundingClientRect().bottom - window.innerHeight <= GAP) {
-      loadPics(activeFilter, ++pageNumber);
+function throttle(fn, throttleTimeout) {
+  var lastCall = Date.now();
+  return function() {
+    if (Date.now() - lastCall >= throttleTimeout) {
+      fn();
+      lastCall = Date.now();
     }
+  };
+}
 
-    lastCall = Date.now();
+var getLoadPics = function() {
+  if (footer.getBoundingClientRect().bottom - window.innerHeight <= GAP) {
+    loadPics(activeFilter, ++pageNumber);
   }
-});
+  console.log('throttle');
+};
+
+window.addEventListener('scroll', throttle(getLoadPics, 200));
 
 changeFilter(activeFilter);
