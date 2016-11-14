@@ -46,7 +46,6 @@ var leftSide = document.querySelector('#resize-x');
 var upSide = document.querySelector('#resize-y');
 var sizeSide = document.querySelector('#resize-size');
 var btnSubmit = document.querySelector('#resize-fwd');
-var canvas = document.querySelector('canvas');
 
 leftSide.min = 0;
 upSide.min = 0;
@@ -63,7 +62,6 @@ var validateForm = function() {
 
   btnSubmit.disabled = !(positive && fitWidth && fitHeight);
 
-  currentResizer.getConstraint(currentX, currentY, currentWidth);
   currentResizer.setConstraint(currentX, currentY, currentWidth);
   currentResizer.moveConstraint(currentX, currentY, currentWidth);
 };
@@ -74,12 +72,10 @@ upSide.addEventListener('input', validateForm);
 
 sizeSide.addEventListener('input', validateForm);
 
-window.addEventListener('resizerchange', function() {
-  if (canvas) {
+window.addEventListener('currentResizerchange', function() {
     leftSide.value = currentResizer.getConstraint().x;
     upSide.value = currentResizer.getConstraint().y;
     sizeSide.value = currentResizer.getConstraint().side;
-  }
 });
 
 // Сценарий для cookie
