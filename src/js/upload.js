@@ -46,6 +46,7 @@ var leftSide = document.querySelector('#resize-x');
 var upSide = document.querySelector('#resize-y');
 var sizeSide = document.querySelector('#resize-size');
 var btnSubmit = document.querySelector('#resize-fwd');
+var canvas = document.querySelector('canvas');
 
 leftSide.min = 0;
 upSide.min = 0;
@@ -56,18 +57,13 @@ var validateForm = function() {
   var currentY = +upSide.value;
   var currentWidth = +sizeSide.value;
 
-  // пробовала через данные переменные, но постоянно undefined
-  // var constr = currentResizer.getConstraint();
-  // var counterX = constr.currentX;
-  // var counterY = constr.currentY;
-  // var counterWidth = constr.currentWidth;
-
   var positive = currentX >= 0 && currentY >= 0;
   var fitWidth = currentX + currentWidth <= currentResizer._image.naturalWidth;
   var fitHeight = currentY + currentWidth <= currentResizer._image.naturalHeight;
 
   btnSubmit.disabled = !(positive && fitWidth && fitHeight);
 
+  currentResizer.getConstraint(currentX, currentY, currentWidth);
   currentResizer.setConstraint(currentX, currentY, currentWidth);
   currentResizer.moveConstraint(currentX, currentY, currentWidth);
 };
@@ -79,9 +75,11 @@ upSide.addEventListener('input', validateForm);
 sizeSide.addEventListener('input', validateForm);
 
 window.addEventListener('resizerchange', function() {
-  leftSide.value = currentResizer.getConstraint().x;
-  upSide.value = currentResizer.getConstraint().y;
-  sizeSide.value = currentResizer.getConstraint().side;
+  if (canvas) {
+    leftSide.value = currentResizer.getConstraint().x;
+    upSide.value = currentResizer.getConstraint().y;
+    sizeSide.value = currentResizer.getConstraint().side;
+  }
 });
 
 // Сценарий для cookie
