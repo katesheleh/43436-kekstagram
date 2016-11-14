@@ -63,7 +63,6 @@ var validateForm = function() {
   btnSubmit.disabled = !(positive && fitWidth && fitHeight);
 
   currentResizer.setConstraint(currentX, currentY, currentWidth);
-  currentResizer.moveConstraint(currentX, currentY, currentWidth);
 };
 
 leftSide.addEventListener('input', validateForm);
