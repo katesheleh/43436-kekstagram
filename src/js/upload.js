@@ -72,10 +72,10 @@ upSide.addEventListener('input', validateForm);
 
 sizeSide.addEventListener('input', validateForm);
 
-window.addEventListener('currentResizerchange', function() {
-    leftSide.value = currentResizer.getConstraint().x;
-    upSide.value = currentResizer.getConstraint().y;
-    sizeSide.value = currentResizer.getConstraint().side;
+window.addEventListener('resizerchange', function() {
+  leftSide.value = currentResizer.getConstraint().x;
+  upSide.value = currentResizer.getConstraint().y;
+  sizeSide.value = currentResizer.getConstraint().side;
 });
 
 // Сценарий для cookie
