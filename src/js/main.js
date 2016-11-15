@@ -63,13 +63,13 @@ function throttle(fn, throttleTimeout) {
   };
 }
 
-var getLoadPics = function() {
+var getLoadPics = throttle(function() {
   if (footer.getBoundingClientRect().bottom - window.innerHeight <= GAP) {
     loadPics(activeFilter, ++pageNumber);
   }
   console.log('throttle');
-};
+}, 200);
 
-window.addEventListener('scroll', throttle(getLoadPics, 200));
+window.addEventListener('scroll', getLoadPics);
 
 changeFilter(activeFilter);
