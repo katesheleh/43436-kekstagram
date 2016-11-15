@@ -68,7 +68,7 @@ var getLoadPics = throttle(function() {
     loadPics(activeFilter, ++pageNumber);
   }
   console.log('throttle');
-}, 200);
+}, 100);
 
 window.addEventListener('scroll', getLoadPics);
 
