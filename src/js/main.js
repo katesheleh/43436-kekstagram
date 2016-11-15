@@ -56,11 +56,9 @@ window.addEventListener('load', function() {
 function debounce(fn, delay) {
   var timer = null;
   return function() {
-    var context = this,
-      args = arguments;
     clearTimeout(timer);
     timer = setTimeout(function() {
-      fn.apply(context, args);
+      fn();
     }, delay);
   };
 }
@@ -70,7 +68,7 @@ var getLoadPics = debounce(function() {
     loadPics(activeFilter, ++pageNumber);
   }
   console.log('throttle');
-}, 200);
+}, 100);
 
 window.addEventListener('scroll', getLoadPics);
 
