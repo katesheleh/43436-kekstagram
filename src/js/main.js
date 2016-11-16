@@ -53,23 +53,23 @@ window.addEventListener('load', function() {
   }
 });
 
-function throttle(fn, throttleTimeout) {
-  var lastCall = Date.now();
+function debounce(fn, delay) {
+  var timer = null;
   return function() {
-    if (Date.now() - lastCall >= throttleTimeout) {
+    clearTimeout(timer);
+    timer = setTimeout(function() {
       fn();
-      lastCall = Date.now();
-    }
+    }, delay);
   };
 }
 
-var getLoadPics = function() {
+var getLoadPics = debounce(function() {
   if (footer.getBoundingClientRect().bottom - window.innerHeight <= GAP) {
     loadPics(activeFilter, ++pageNumber);
   }
   console.log('throttle');
-};
+}, 100);
 
-window.addEventListener('scroll', throttle(getLoadPics, 200));
+window.addEventListener('scroll', getLoadPics);
 
 changeFilter(activeFilter);
