@@ -77,17 +77,6 @@ window.addEventListener('resizerchange', function() {
   sizeSide.value = currentResizer.getConstraint().side;
 });
 
-// Сценарий для cookie
-var cookieItems = document.querySelectorAll('.upload-filter-controls > input');
-var now = new Date();
-var controlDay = new Date(new Date().getFullYear(), 11, 9);
-var expireDate = (now - controlDay) / (24 * 60 * 60 * 1000);
-
-// если получается отрицательное число при вычислении, то присвоить 0 переменной. Остальное должна сделать библиотека.
-if (expireDate < 0) {
-  expireDate = -expireDate;
-}
-
 /**
  * Удаляет текущий объект {@link Resizer}, чтобы создать новый с другим
  * изображением.
@@ -271,6 +260,10 @@ filterForm.addEventListener('reset', function(evt) {
  * записав сохраненный фильтр в cookie.
  * @param {Event} evt
  */
+
+ // Сценарий для storage
+var valueForStorage = document.querySelectorAll('.upload-filter-controls > input');
+
 filterForm.addEventListener('submit', function(evt) {
   evt.preventDefault();
 
@@ -280,11 +273,9 @@ filterForm.addEventListener('submit', function(evt) {
   filterForm.classList.add('invisible');
   uploadForm.classList.remove('invisible');
 
-  for (var i = 0; i < cookieItems.length; i++) {
-    if (cookieItems[i].checked === true) {
-      window.Cookies.set('upload-filter', cookieItems[i].value, {
-        expires: expireDate
-      });
+  for (var i = 0; i < valueForStorage.length; i++) {
+    if (valueForStorage[i].checked === true) {
+      localStorage.setItem('upload-filter', valueForStorage[i].value);
     }
   }
 });
@@ -318,9 +309,9 @@ filterForm.addEventListener('change', function() {
 
 cleanupResizer();
 updateBackground();
-var savedCookie = window.Cookies.get('upload-filter');
+var savedValue = localStorage.getItem('upload-filter');
 
-if (savedCookie) {
-  var actualCookie = document.querySelector('#upload-filter-' + savedCookie);
-  actualCookie.click();
+if (savedValue) {
+  var actualValue = document.querySelector('#upload-filter-' + savedValue);
+  actualValue.click();
 }
