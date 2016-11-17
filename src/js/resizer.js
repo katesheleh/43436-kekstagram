@@ -5,6 +5,10 @@
    * @constructor
    * @param {string} image
    */
+
+  var RADIUS = 3;
+  var DISTANCE_BETWEEN_POINTS = RADIUS * 3; // я умножаю на 3, потому что считаю, что именно это значение позволяет расположить точки наиболее гармонично
+
   var Resizer = function(image) {
     // Изображение, с которым будет вестись работа.
     this._image = new Image();
@@ -76,27 +80,38 @@
      */
     _resizeConstraint: null,
 
+    // формула для рисования точки
+    createCircle: function(x, y) {
+      this._ctx.beginPath();
+      this._ctx.arc(x, y, RADIUS, 0, Math.PI * 2);
+      this._ctx.fill();
+    },
+
+    // функция для рисования рамки из точек
+    drawLinesFromPoints: function() {
+      this._ctx.fillStyle = '#ffe753';
+      var side = this._resizeConstraint.side / 2 - this._ctx.lineWidth;
+      var start = (-((this._resizeConstraint.side / 2) + this._ctx.lineWidth)) + RADIUS;
+      var finish = (this._resizeConstraint.side / 2 - this._ctx.lineWidth) - RADIUS;
+
+      for (var counter = start; counter < side; counter += DISTANCE_BETWEEN_POINTS) {
+        // верхняя рамка
+        this.createCircle(counter, start);
+        // правая рамка
+        this.createCircle(finish, counter);
+        // нижняя рамка
+        this.createCircle(counter, finish);
+        // левая рамка
+        this.createCircle(start, counter);
+      }
+    },
+
     /**
      * Отрисовка канваса.
      */
     redraw: function() {
       // Очистка изображения.
       this._ctx.clearRect(0, 0, this._container.width, this._container.height);
-
-      // Параметры линии.
-      // NB! Такие параметры сохраняются на время всего процесса отрисовки
-      // canvas'a поэтому важно вовремя поменять их, если нужно начать отрисовку
-      // чего-либо с другой обводкой.
-
-      // Толщина линии.
-      this._ctx.lineWidth = 6;
-      // Цвет обводки.
-      this._ctx.strokeStyle = '#ffe753';
-      // Размер штрихов. Первый элемент массива задает длину штриха, второй
-      // расстояние между соседними штрихами.
-      this._ctx.setLineDash([15, 10]);
-      // Смещение первого штриха от начала линии.
-      this._ctx.lineDashOffset = 7;
 
       // Сохранение состояния канваса.
       this._ctx.save();
@@ -111,13 +126,8 @@
       // Координаты задаются от центра холста.
       this._ctx.drawImage(this._image, displX, displY);
 
-      // Отрисовка прямоугольника, обозначающего область изображения после
-      // кадрирования. Координаты задаются от центра.
-      this._ctx.strokeRect(
-        (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-        (-this._resizeConstraint.side / 2) - this._ctx.lineWidth / 2,
-        this._resizeConstraint.side - this._ctx.lineWidth / 2,
-        this._resizeConstraint.side - this._ctx.lineWidth / 2);
+      // вызываем функцию для отрисовки точек
+      this.drawLinesFromPoints();
 
       // Отрисовка полого четырехугольника
       this._ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
