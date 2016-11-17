@@ -5,6 +5,10 @@
    * @constructor
    * @param {string} image
    */
+
+  var RADIUS = 3;
+  var DISTANCE_BETWEEN_POINTS = RADIUS * 3; // я умножаю на 3, потому что считаю, что именно это значение позволяет расположить точки наиболее гармонично
+
   var Resizer = function(image) {
     // Изображение, с которым будет вестись работа.
     this._image = new Image();
@@ -77,36 +81,28 @@
     _resizeConstraint: null,
 
     // формула для рисования точки
-    createCircle: function(x, y, radius) {
+    createCircle: function(x, y) {
       this._ctx.beginPath();
-      this._ctx.arc(x, y, radius, 0, Math.PI * 2);
+      this._ctx.arc(x, y, RADIUS, 0, Math.PI * 2);
       this._ctx.fill();
     },
 
     // функция для рисования рамки из точек
     drawLinesFromPoints: function() {
-
       this._ctx.fillStyle = '#ffe753';
-      var radius = 3;
-      var distanceBetweenPoints = radius * 3; // я умножаю на 3, потому что считаю, что именно это значение позволяет расположить точки наиболее гармонично
-
       var side = this._resizeConstraint.side / 2 - this._ctx.lineWidth;
-      var startPoints = (-((this._resizeConstraint.side / 2) + this._ctx.lineWidth)) + radius;
-      var finishPoints = (this._resizeConstraint.side / 2 - this._ctx.lineWidth) - radius;
+      var start = (-((this._resizeConstraint.side / 2) + this._ctx.lineWidth)) + RADIUS;
+      var finish = (this._resizeConstraint.side / 2 - this._ctx.lineWidth) - RADIUS;
 
-      var counter = startPoints;
-
-      while (counter < side) {
+      for (var counter = start; counter < side; counter += DISTANCE_BETWEEN_POINTS) {
         // верхняя рамка
-        this.createCircle(counter, startPoints, radius);
+        this.createCircle(counter, start);
         // правая рамка
-        this.createCircle(finishPoints, counter, radius);
+        this.createCircle(finish, counter);
         // нижняя рамка
-        this.createCircle(counter, finishPoints, radius);
+        this.createCircle(counter, finish);
         // левая рамка
-        this.createCircle(startPoints, counter, radius);
-        // количество точек в ряду
-        counter += distanceBetweenPoints;
+        this.createCircle(start, counter);
       }
     },
 
