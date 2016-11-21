@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+
   /**
    * @constructor
    * @param {string} image
@@ -348,4 +348,6 @@
   };
 
   window.Resizer = Resizer;
-})();
+
+
+module.exports = Resizer;

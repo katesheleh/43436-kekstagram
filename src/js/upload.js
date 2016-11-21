@@ -7,6 +7,8 @@
 
 'use strict';
 
+var Resizer = require('./resizer.js');
+
 /** @enum {string} */
 var FileType = {
   'GIF': '',
@@ -315,3 +317,9 @@ if (savedValue) {
   var actualValue = document.querySelector('#upload-filter-' + savedValue);
   actualValue.click();
 }
+
+
+module.exports = {
+  cleanupResizer,
+  updateBackground
+};

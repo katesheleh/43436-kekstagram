@@ -1,5 +1,5 @@
 'use strict';
-
+var upload = require('./upload.js');
 var loadData = require('./loadData.js');
 var render = require('./render.js');
 var gallery = require('./gallery.js');
@@ -10,6 +10,8 @@ var GAP = 120;
 var pageNumber = 0;
 var activeFilter = 'filter-popular';
 
+upload.cleanupResizer();
+upload.updateBackground();
 
 if (window.innerHeight >= LARGE_SCREEN) {
   PAGE_SIZE = 26;
@@ -18,12 +20,24 @@ if (window.innerHeight >= LARGE_SCREEN) {
 var container = document.querySelector('.pictures');
 var filters = document.querySelector('.filters');
 var footer = document.querySelector('footer');
-
+var loadedPictures = [];
 
 var renderPictures = function(pictures) {
-  render(pictures);
-  gallery.setPictures(pictures);
+  loadedPictures = loadedPictures.concat(pictures);
+  render(loadedPictures);
+  gallery.setPictures(loadedPictures);
 };
+
+// var renderPictures = function(pictures) {
+//   render(pictures);
+//   gallery.setPictures(pictures);
+// };
+
+var isNextPageAvailable = function(pictures, page, pageSize) {
+  return page < Math.floor(pictures.length / pageSize);
+};
+
+// isNextPageAvailable(loadedPictures, pageNumber, PAGE_SIZE)
 
 var loadPics = function(filter, pageNum) {
   loadData('http://localhost:1507/api/pictures', {
@@ -43,6 +57,7 @@ var changeFilter = function(filterID) {
 
 filters.addEventListener('click', function(event) {
   if (event.target.classList.contains('filters-item')) {
+    loadedPictures = [];
     changeFilter(event.target.getAttribute('for'));
   }
 });
@@ -63,8 +78,9 @@ function debounce(fn, delay) {
   };
 }
 
+
 var getLoadPics = debounce(function() {
-  if (footer.getBoundingClientRect().bottom - window.innerHeight <= GAP) {
+  if (footer.getBoundingClientRect().bottom - window.innerHeight <= GAP && isNextPageAvailable(loadedPictures, pageNumber, PAGE_SIZE)) {
     loadPics(activeFilter, ++pageNumber);
   }
   console.log('throttle');
