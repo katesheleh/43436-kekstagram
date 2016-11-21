@@ -263,7 +263,7 @@ filterForm.addEventListener('reset', function(evt) {
  * @param {Event} evt
  */
 
- // Сценарий для storage
+// Сценарий для storage
 var valueForStorage = document.querySelectorAll('.upload-filter-controls > input');
 
 filterForm.addEventListener('submit', function(evt) {
@@ -320,6 +320,6 @@ if (savedValue) {
 
 
 module.exports = {
-  cleanupResizer,
-  updateBackground
+  cleanupResizer: cleanupResizer,
+  updateBackground: updateBackground
 };

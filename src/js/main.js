@@ -23,21 +23,14 @@ var footer = document.querySelector('footer');
 var loadedPictures = [];
 
 var renderPictures = function(pictures) {
+  render(pictures, loadedPictures.length);
   loadedPictures = loadedPictures.concat(pictures);
-  render(loadedPictures);
   gallery.setPictures(loadedPictures);
 };
-
-// var renderPictures = function(pictures) {
-//   render(pictures);
-//   gallery.setPictures(pictures);
-// };
 
 var isNextPageAvailable = function(pictures, page, pageSize) {
   return page < Math.floor(pictures.length / pageSize);
 };
-
-// isNextPageAvailable(loadedPictures, pageNumber, PAGE_SIZE)
 
 var loadPics = function(filter, pageNum) {
   loadData('http://localhost:1507/api/pictures', {
